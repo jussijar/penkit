@@ -1,0 +1,13 @@
+.table {
+	font-size: 300%;
+}
+.showDiff-true {
+  color: #090;
+  -webkit-transition:all linear 0.3s;
+  transition:all linear 0.3s;
+}
+.showDiff-false {
+  color: #000;
+  -webkit-transition:all linear 0.3s;
+  transition:all linear 0.3s;
+}

@@ -6,32 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="PENKIT">
     <title>PENKIT</title>
-	
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	
+    <link href="css/penkit.css" rel="stylesheet">
+	<script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-	<script type="text/javascript" src="../target/js/goog/base.js"></script>
-	<script type="text/javascript" src="../target/js/cljs/core.js"></script>
-	<script type="text/javascript" src="../target/js/penkit/client.js"></script>
-	<style>
-	.table {
-		font-size: 300%;
-	}
-	.showDiff-true {
-	  color: #090;
-	  -webkit-transition:all linear 0.3s;
-	  transition:all linear 0.3s;
-	}
-	.showDiff-false {
-	  color: #000;
-	  -webkit-transition:all linear 0.3s;
-	  transition:all linear 0.3s;
-	}
-	</style>
+	<script type="text/javascript" src="client.js"></script>
   </head>
 
   <body role="document" ng-controller="PenkitController">
-    
 	<h1 class="form-group text-center">PENKIT</h1>
 	<form name="form">
 	<div class="col-sm-12 form-group">
@@ -53,12 +35,12 @@
 		</select>
 	</div>
 	<div class="col-sm-4 form-group">
-		<input 	type="number" step="any"
+		<input 	type="number" step="5" min="40"
 				ng-model="user.weight" 
 				class="form-control input-lg" placeholder="OMAT KILOT" required>
 	</div>
 	<div class="col-sm-4 form-group">
-		<input 	type="number" step="any"
+		<input 	type="number" step="5" min="40"
 				ng-model="user.lift" 
 				class="form-control input-lg" placeholder="NOSTO KILOT" required>
 	</div>
@@ -73,6 +55,7 @@
 				<th>
 					<div class="col-sm-4 form-group pull-right">
 						<select class="form-control input-lg" 
+								ng-init="view='kg'"
 								ng-model="view"
 								ng-change="predicate='difference.{{view}}'">
 							<option value="kg">KG</option>
