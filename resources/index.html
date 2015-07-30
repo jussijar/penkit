@@ -50,27 +50,32 @@
 	<table class="col-sm-4 form-group table table-striped">
 		<thead>
 			<tr>
-				<th></th>
-				<th>
-					<div class="col-sm-4 form-group pull-right">
-						<select class="form-control input-lg" 
-								ng-init="view='kg'"
-								ng-model="view"
-								ng-change="predicate='difference.{{view}}'">
-							<option value="kg">KG</option>
-							<option value="sinclair">SINCLAIR</option>
-							<option value="wilks">WILKS</option>
-						</select>
-					</div>
+				<th class="col-sm-6"></th>
+				<th class="col-sm-2">
+					<a href="https://en.wikipedia.org/wiki/Kilogram" class="pull-right">kg</a>
+				</th>
+				<th class="col-sm-2">
+					<a href="https://en.wikipedia.org/wiki/Sinclair_Coefficients" class="pull-right">sinclair</a>
+				</th>
+				<th class="col-sm-2">
+					<a href="https://en.wikipedia.org/wiki/Wilks_Coefficient" class="pull-right">wilks</a>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="team in teams | orderBy:predicate">
-				<td class="col-sm-8">{{team.name}}</td>
+			<tr ng-repeat="team in teams | orderBy:predicate:true">
+				<td class="col-sm-6">{{team._id}}</td>
 				<td class="text-right showDiff-{{showDiff}}">
-					<span ng-hide="showDiff"><strong>{{round(team.totalScore[view])}}</strong></span>
-					<span ng-show="showDiff"><strong>+{{round(team.difference[view])}}</strong></span>
+					<span ng-hide="showDiff"><strong>{{round(team.kg)}}</strong></span>
+					<span ng-show="showDiff"><strong>+{{round(team.dkg)}}</strong></span>
+				</td>
+				<td class="text-right showDiff-{{showDiff}}">
+					<span ng-hide="showDiff"><strong>{{round(team.sc)}}</strong></span>
+					<span ng-show="showDiff"><strong>+{{round(team.dsc)}}</strong></span>
+				</td>
+				<td class="text-right showDiff-{{showDiff}}">
+					<span ng-hide="showDiff"><strong>{{round(team.wk)}}</strong></span>
+					<span ng-show="showDiff"><strong>+{{round(team.dwk)}}</strong></span>
 				</td>
 			</tr>
 		</tbody>
