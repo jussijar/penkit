@@ -52,18 +52,18 @@
 			<tr>
 				<th class="col-sm-6"></th>
 				<th class="col-sm-2">
-					<a href="https://en.wikipedia.org/wiki/Kilogram" class="pull-right">kg</a>
+					<a ng-click="user.predicate='-dkg'" href="#https://en.wikipedia.org/wiki/Kilogram" class="pull-right">kg</a>
 				</th>
 				<th class="col-sm-2">
-					<a href="https://en.wikipedia.org/wiki/Sinclair_Coefficients" class="pull-right">sinclair</a>
+					<a ng-click="user.predicate='-dsc'" href="#https://en.wikipedia.org/wiki/Sinclair_Coefficients" class="pull-right">sinclair</a>
 				</th>
 				<th class="col-sm-2">
-					<a href="https://en.wikipedia.org/wiki/Wilks_Coefficient" class="pull-right">wilks</a>
+					<a ng-click="user.predicate='-dwk'" href="#https://en.wikipedia.org/wiki/Wilks_Coefficient" class="pull-right">wilks</a>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="team in teams | orderBy:predicate:true">
+			<tr ng-repeat="team in teams | orderBy:user.predicate">
 				<td class="col-sm-6">{{team._id}}</td>
 				<td class="text-right showDiff-{{showDiff}}">
 					<span ng-hide="showDiff"><strong>{{round(team.kg)}}</strong></span>

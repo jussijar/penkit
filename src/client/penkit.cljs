@@ -31,7 +31,7 @@
 	(! $scope.addLift
 		(fn [form]
 			(if form.$valid
-				(do (print $scope.user) ;$scope.user
+				(do (print $scope.user)
 					(.emit socket "NOSTO!" (clj->js {
 						:team $scope.user.team 
 						:kg $scope.user.lift 
