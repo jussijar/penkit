@@ -6,13 +6,11 @@
 (def staticResources (. express (static "resources")))
 (def compiledJs (. express (static "target/js")))
 (def http (. (node/require "http") (Server app)))
-(def socketio (node/require "socket.io"))
-(def io (socketio http))
-(def mongo (node/require "mongodb"))
-(def nCollection (atom {}))
+(def io ((node/require "socket.io") http))
+(def mongojs (node/require "mongojs"))
 (def nostot (atom (array-map)))
 (defn fetchResults [n f] (.aggregate n (clj->js [
-		{ :$project {	:_id 0 
+		{ :$project {	:_id 0
 						:team 1
             :kg {:$cond [{:$gt [:$createdAt :null]} 0 :$kg]}
             :sc {:$cond [{:$gt [:$createdAt :null]} 0 :$sc]}
@@ -25,43 +23,49 @@
 					:kg {:$sum :$kg} :sc {:$sum :$sc} :wk {:$sum :$wk}
 					:dkg {:$sum :$dkg} :dsc {:$sum :$dsc} :dwk {:$sum :$dwk}
        }}]) f))
-(def db (.connect mongo.MongoClient "mongodb://nostaja:password@localhost/penkit" (fn [err db] 
-	(fetchResults (reset! nCollection (.collection db "n"))
-		 (fn [err result] (do (print result) (reset! nostot (js->clj result)))))
-)))
+(def db (mongojs "mongodb://nostaja:password@localhost/penkit" (clj->js ["n"])))
+(def nCollection (.collection db "n"))
+(fetchResults nCollection (fn [err result]  (reset! nostot (js->clj result))))
 
 (defn -main [& args]
-	(. io (on "connection" (fn [socket] 
-		(. socket (on "NOSTO!" (fn [msgjson] 
+	(. io (on "connection" (fn [socket]
+		(. socket (on "NOSTO!" (fn [msgjson]
 			(let [msg (js->clj msgjson)]
 			(do (print msg)
-				(let [out { 
+				(let [out {
 					:$set {:team (get msg "team")}
 					:$inc {
 					:kg (get msg "kg")
 					:sc (get msg "sc")
 					:wk (get msg "wk")
 				}}]
-				(.update @nCollection 
-					(clj->js {:$and [
-						{:createdAt {:$exists false}}
-						{:team (get msg "team")}
-					]})
-					(clj->js out)
-					(clj->js {:upsert true})
-					(fn [err res] (print err)))
-				(.insert @nCollection 
-					(clj->js {
-						:createdAt (new js/Date)
-						:team (get msg "team")
-						:kg (get msg "kg")
-						:sc (get msg "sc")
-						:wk (get msg "wk")
-					})
-					(fn [err res] (fetchResults @nCollection (fn [e result] 
-						(.emit io "NOSTOT" (clj->js (reset! nostot (js->clj result))))
-					)))
-				)
+
+        (.execute
+
+          (let [bulk (atom (.initializeUnorderedBulkOp nCollection))]
+
+            (.insert @bulk (clj->js {
+            :createdAt (new js/Date)
+            :team (get msg "team")
+            :kg (get msg "kg")
+            :sc (get msg "sc")
+            :wk (get msg "wk")
+            }))
+
+            ;(.insert bulk )
+
+            (.update (.upsert (.find @bulk (clj->js {:$and [
+						  {:createdAt {:$exists false}}
+						  {:team (get msg "team")}
+				    ]}))) (clj->js out))
+
+            @bulk) (fn [e]
+                      (fetchResults nCollection (fn [err result]
+                        (.emit io "NOSTOT" (clj->js (reset! nostot (js->clj result))))
+                      ))
+                     ))
+
+
 				))))))
 		(.emit socket "NOSTOT" (clj->js @nostot))
 		(print "It's on!"))))
