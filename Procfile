@@ -1,1 +1,1 @@
-web: node target/server.js
+web: lein compile && node target/server.js
