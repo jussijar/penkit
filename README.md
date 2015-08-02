@@ -26,3 +26,20 @@
 
   # Open http://localhost:3000/
 ```
+
+## Heroku checklist
+
+Insert envvars such as mongouri
+
+Insert buildpacks
+See https://devcenter.heroku.com/articles/buildpacks#buildpack-detect-order
+
+Insert procfile
+
+Insert min-version for leiningen
+
+If all else fails
+```
+heroku run bash 
+```
+
