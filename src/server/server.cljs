@@ -1,13 +1,15 @@
 (ns penkit.server
   (:require [cljs.nodejs :as node]))
 (enable-console-print!)
+(def environment (js->clj js/process.env))
+(def mongouri (get environment "MONGOLAB_URI" "mongodb://nostaja:password@localhost/penkit"))
+(def port (get environment "PORT" 3000))
 (def express (node/require "express"))
 (def app (express))
 (def http (. (node/require "http") (Server app)))
 (def io ((node/require "socket.io") http))
 (def mongojs (node/require "mongojs"))
 (def nostot (atom (array-map)))
-
 (defn update-nosto [[val-to-match] kg sc wk]
   (fn [nosto]
     (if (= val-to-match (get nosto "_id"))
@@ -33,7 +35,7 @@
 					:kg {:$sum :$kg} :sc {:$sum :$sc} :wk {:$sum :$wk}
 					:dkg {:$sum :$dkg} :dsc {:$sum :$dsc} :dwk {:$sum :$dwk}
        }}]) f) n)
-(def db (mongojs "mongodb://nostaja:password@localhost/penkit"))
+(def db (mongojs mongouri))
 (def nCollection
   (fetchResults
      (.collection db "n")
@@ -72,6 +74,6 @@
 		(print "It's on!"))))
 	(. app (use (. express (static "resources"))))
 	(. app (use (. express (static "target/js"))))
-	(. http (listen 3000 (fn [] (print "Upsy-daisy")))))
+	(. http (listen port (fn [] (print "Upsy-daisy")))))
 
 (set! *main-cli-fn* -main)
