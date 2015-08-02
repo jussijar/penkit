@@ -1,5 +1,8 @@
+body {
+	font-family: 'Open Sans', arial, sans-serif;
+}
 .table {
-	font-size: 200%;
+	font-size: 150%;
 }
 .showDiff-true {
   color: #090;
