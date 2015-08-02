@@ -23,12 +23,27 @@
 
 (def.controller penkit.PenkitController [$scope $interval $window]
 	(! $scope.user (localStorage->user (.getItem $window.localStorage :PENKIT!)))
+	(! $scope.user.lifts (arr (obj :weight 6 :multiplier 7)))
 	(def socket (js/io))
 	(. socket (on "NOSTOT" (fn [msg] (! $scope.teams msg))))
 	($interval (fn [] (! $scope.showDiff (not $scope.showDiff))) 1500)
+	
+	(! $scope.calculateKg 
+		(fn [l]
+         (.-length ($scope.user.lifts.filter
+            (fn [v] (and (not v.weight) (not v.multiplier)))))))
+	;(fn [l]
+	;(do (print $scope.user.lifts)
+;	(reduce #(+ (do (print %)
+;					(get % :weight 0))) 0 (seq (js->clj $scope.user.lifts))))))
+	(! $scope.calculateWilks
+		(fn [w]
+			(if (nil? $scope.user.weight)
+				"(syötä paino)"
+				15)))
 	(! $scope.round 
 		(fn [x] (.toFixed (/ (Math/round (* 100 x)) 100) 2)))
-	(! $scope.addLift
+	(! $scope.sendLifts
 		(fn [form]
 			(if form.$valid
 				(do (print $scope.user)
