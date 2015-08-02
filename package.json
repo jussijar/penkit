@@ -2,7 +2,7 @@
   "name": "penkit",
   "version": "0.0.1",
   "scripts": { 
-	"start": "node target/server.js" 
+	"start": "lein compile && node target/server.js" 
   },
   "dependencies": {
     "express": "4.13.1",
