@@ -5,6 +5,7 @@
 					[im.chit/purnam.core "0.5.2"]
 					[im.chit/gyr "0.3.1"]]
 	:jvm-opts ^:replace ["-Xmx1g" "-server"]
+	:min-lein-version "2.0.0"
 	:node-dependencies [[source-map-support "0.3.2"]]
 	:plugins [[lein-cljsbuild "1.0.3"]
 			[lein-ancient "0.6.7"]
