@@ -1,6 +1,9 @@
 {
   "name": "penkit",
   "version": "0.0.1",
+  "scripts": { 
+	"start": "node target/server.js" 
+  },
   "dependencies": {
     "express": "4.13.1",
     "mongodb": "2.0.39",
