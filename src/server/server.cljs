@@ -20,7 +20,11 @@
                       "dsc" (+ sc (get nosto "dsc"))
                       "dwk" (+ wk (get nosto "dwk")))
         nosto)))
-
+(defn upsert-nostot [n team kg sc wk]
+  (if (nil? (some #(= team (get % "_id")) n))
+    (into [{"_id" team "kg" kg "sc" sc "wk" wk "dkg" kg "dsc" sc "dwk" wk}] n)
+    (map (update-nosto [team] kg sc wk) n)
+    ))
 (defn fetchResults [n f] (.aggregate n (clj->js [
 		{ :$project {	:_id 0
 						:team 1
@@ -40,7 +44,6 @@
   (fetchResults
      (.collection db "n")
        (fn [err result] (reset! nostot (js->clj result)))))
-
 
 (defn -main [& args]
 	(. io (on "connection" (fn [socket]
@@ -66,10 +69,10 @@
                 :$set {:team team}
                 :$inc {:kg kg :sc sc :wk wk }
             }))
-            bulk) (fn [e]
-                      (.emit io "NOSTOT" (clj->js (reset! nostot
-                            (map (update-nosto [team] kg sc wk) @nostot))))))
-				))))
+            bulk) (fn [e] (.emit io "NOSTOT" (clj->js (reset! nostot
+                            (upsert-nostot @nostot team kg sc wk))))
+                    ))))))
+
 		(.emit socket "NOSTOT" (clj->js @nostot))
 		(print "It's on!"))))
 	(. app (use (. express (static "resources"))))
