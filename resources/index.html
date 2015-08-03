@@ -10,24 +10,64 @@
     <link href="css/penkit.css" rel="stylesheet">
 	<script src="/socket.io/socket.io.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="/js/ui-bootstrap-tpls-0.13.2.min.js"></script>
+
 	<script type="text/javascript" src="client.js"></script>
   </head>
 
   <body role="document" ng-controller="PenkitController">
+    <script type="text/ng-template" id="send_popover.html">
+        <div class="overlay" style="width: 8em">
+          <span class="text-center"><strong>{{state}}</strong></span>
+        </div>
+    </script>
+    <script type="text/ng-template" id="sex_popover.html">
+        <div class="overlay">
+          <span class="text-center"><strong>SUKUPUOLI!</strong></span>
+        </div>
+    </script>
+    <script type="text/ng-template" id="team_popover.html">
+        <div class="overlay">
+          <span class="text-center"><strong>TIIMI!</strong></span>
+        </div>
+    </script>
+    <script type="text/ng-template" id="name_popover.html">
+        <div class="overlay">
+          <span class="text-center"><strong>NIMI!</strong></span>
+        </div>
+    </script>
+    <script type="text/ng-template" id="weight_popover.html">
+        <div class="overlay">
+          <span class="text-center"><strong>PAINO!</strong></span>
+        </div>
+    </script>
+    <script type="text/ng-template" id="display_wilks_popover.html">
+        <div class="overlay">
+          <span class="text-center"><strong>+{{calculateWilks(user.weight)}}wilks</strong></span>
+        </div>
+    </script>
 	<h1 class="form-group text-center">PENKIT<small>BETA</small></h1>
+
+
 	<form name="form">
-	<div class="col-sm-12 form-group">
+    <div class="col-sm-12 form-group">
 		<input 	type="text"
 				ng-model="user.team"
+                popover-template="'team_popover.html'"
+                popover-trigger="focus"
 				class="form-control input-lg" placeholder="PENKKITIIMIN NIMI" ng-change="user.team=user.team.toUpperCase()" required>
 	</div>
 	<div class="col-sm-12 form-group">
 		<input 	type="text"
 				ng-model="user.name"
-				class="form-control input-lg" placeholder="NOSTAJAN NIMI" required>
+                popover-template="'name_popover.html'"
+                popover-trigger="focus"
+				class="form-control input-lg" placeholder="NOSTAJAN NIMI" ng-change="user.name=user.name.toUpperCase()" required>
 	</div>
 	<div class="col-sm-4 form-group">
 		<select ng-model="user.sex"
+                popover-template="'sex_popover.html'"
+                popover-trigger="focus"
 				class="form-control input-lg">
 			<option value="MALE">MIES</option>
 			<option value="FEMALE">NAINEN</option>
@@ -36,15 +76,22 @@
 	<div class="col-sm-4 form-group">
 		<input 	type="number" step="5" min="40"
 				ng-model="user.weight"
+                popover-template="'weight_popover.html'"
+                popover-trigger="focus"
 				class="form-control input-lg" placeholder="NOSTAJAN PAINO" required>
 	</div>
 	<div class="col-sm-4 form-group">
 		<input 	type="number" step="5" min="40"
 				ng-model="user.lift"
+                popover-template="'display_wilks_popover.html'"
+                popover-trigger="focus"
 				class="form-control input-lg" placeholder="NOSTO KILOT" required>
 	</div>
 	<div class="col-sm-12 form-group">
-		<button type="submit" class="btn btn-default btn-lg btn-block" ng-click="addLift(form)">NOSTA!</button>
+		<button type="button"
+                popover-template="'send_popover.html'"
+                popover-trigger="focus"
+                class="btn btn-default btn-lg btn-block" ng-click="addLift(form)">NOSTA!</button>
 	</div>
 	</form>
 	<table class="col-sm-4 form-group table table-striped">
