@@ -51,6 +51,8 @@
 						                }))
 					                  (.setItem $window.localStorage :PENKIT! (.toJson js/angular $scope.user))
                             (! $scope.times 0)
-                          )) 1500 1))))))
+                          )) 1500 1)))
+        (! $scope.state "TÄYTÄ FORMI!")
+        )))
   )
 
