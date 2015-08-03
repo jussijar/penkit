@@ -17,17 +17,17 @@
 	<h1 class="form-group text-center">PENKIT<small>BETA</small></h1>
 	<form name="form">
 	<div class="col-sm-12 form-group">
-		<input 	type="text" 
-				ng-model="user.team" 
-				class="form-control input-lg" placeholder="PENKKITIIMIN NIMI" required>
+		<input 	type="text"
+				ng-model="user.team"
+				class="form-control input-lg" placeholder="PENKKITIIMIN NIMI" ng-change="user.team=user.team.toUpperCase()" required>
 	</div>
 	<div class="col-sm-12 form-group">
-		<input 	type="text" 
-				ng-model="user.name" 
+		<input 	type="text"
+				ng-model="user.name"
 				class="form-control input-lg" placeholder="NOSTAJAN NIMI" required>
 	</div>
 	<div class="col-sm-4 form-group">
-		<select ng-model="user.sex" 
+		<select ng-model="user.sex"
 				class="form-control input-lg">
 			<option value="MALE">MIES</option>
 			<option value="FEMALE">NAINEN</option>
@@ -35,12 +35,12 @@
 	</div>
 	<div class="col-sm-4 form-group">
 		<input 	type="number" step="5" min="40"
-				ng-model="user.weight" 
+				ng-model="user.weight"
 				class="form-control input-lg" placeholder="NOSTAJAN PAINO" required>
 	</div>
 	<div class="col-sm-4 form-group">
 		<input 	type="number" step="5" min="40"
-				ng-model="user.lift" 
+				ng-model="user.lift"
 				class="form-control input-lg" placeholder="NOSTO KILOT" required>
 	</div>
 	<div class="col-sm-12 form-group">
