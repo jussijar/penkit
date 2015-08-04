@@ -81,11 +81,25 @@
 				class="form-control input-lg" placeholder="NOSTAJAN PAINO" required>
 	</div>
 	<div class="col-sm-4 form-group">
-		<input 	type="number" step="5" min="20"
+        <div class="input-group">
+		<span class="input-group-btn">
+        <button type="button"
+                class="btn btn-default btn-lg" ng-click="user.lift=user.lift - 5">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+        </button>
+        </span>
+        <input 	type="number" step="5" min="20"
 				ng-model="user.lift"
                 popover-template="'display_wilks_popover.html'"
                 popover-trigger="focus"
 				class="form-control input-lg" placeholder="NOSTOKILOT" required>
+        <span class="input-group-btn">
+        <button type="button"
+                class="btn btn-default btn-lg" ng-click="user.lift=user.lift + 5">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+        </span>
+    </div>
 	</div>
 	<div class="col-sm-12 form-group">
 		<button type="button"
