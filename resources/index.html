@@ -43,7 +43,7 @@
     </script>
     <script type="text/ng-template" id="display_wilks_popover.html">
         <div class="overlay">
-          <span class="text-center"><strong>+{{calculateWilks(user.weight)}}wilks</strong></span>
+          <span class="text-center"><strong>+{{calculateWilks(user.weight) | number:2}}wilks</strong></span>
         </div>
     </script>
 	<h1 class="form-group text-center">PENKIT</h1>
@@ -128,12 +128,12 @@
 			<tr ng-repeat="team in teams | orderBy:user.predicate">
 				<td>{{team._id}}</td>
 				<td class="text-right showDiff-{{showDiff}}">
-					<span ng-hide="showDiff"><strong>{{round(team.kg)}}</strong></span>
-					<span ng-show="showDiff"><strong>+{{round(team.dkg)}}</strong></span>
+					<span ng-hide="showDiff"><strong>{{team.kg | number:2}}</strong></span>
+					<span ng-show="showDiff"><strong>+{{team.dkg | number:2}}</strong></span>
 				</td>
 				<td class="text-right showDiff-{{showDiff}}">
-					<span ng-hide="showDiff"><strong>{{round(team.wk)}}</strong></span>
-					<span ng-show="showDiff"><strong>+{{round(team.dwk)}}</strong></span>
+					<span ng-hide="showDiff"><strong>{{team.wk | number:2}}</strong></span>
+					<span ng-show="showDiff"><strong>+{{team.dwk | number:2}}</strong></span>
 				</td>
 			</tr>
 		</tbody>

@@ -27,9 +27,8 @@
 	(def socket (js/io))
 	(. socket (on "NOSTOT" (fn [msg] (! $scope.teams msg))))
 	($interval (fn [] (! $scope.showDiff (not $scope.showDiff))) 1500)
-	(! $scope.round (fn [x] (.toFixed (/ (Math/round (* 100 x)) 100) 2)))
   (! $scope.calculateWilks
-		  (fn [x] ($scope.round (wilks $scope.user.weight $scope.user.lift $scope.user.sex))))
+		  (fn [x] (wilks $scope.user.weight $scope.user.lift $scope.user.sex)))
 	(! $scope.state "NOSTA!")
   (! $scope.times 0)
 
