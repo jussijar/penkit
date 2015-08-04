@@ -10,6 +10,7 @@
     <link href="css/penkit.css" rel="stylesheet">
 	<script src="/socket.io/socket.io.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.min.js"></script>
     <script src="/js/ui-bootstrap-tpls-0.13.2.min.js"></script>
 
 	<script type="text/javascript" src="client.js"></script>
@@ -46,41 +47,57 @@
           <span class="text-center"><strong>+{{calculateWilks(user.weight) | number:2}}wilks</strong></span>
         </div>
     </script>
-	<h1 class="form-group text-center">PENKIT</h1>
 
 
 	<form name="form">
-    <div class="col-sm-12 form-group">
-		<input 	type="text"
-				ng-model="user.team"
-                popover-template="'team_popover.html'"
-                popover-trigger="focus"
-				class="form-control input-lg" placeholder="PENKKITIIMIN NIMI" ng-change="user.team=user.team.toUpperCase()" required>
+    <div class="col-sm-12">
+        <h1 class="form-group text-left">PENKIT
+            <button type="button"
+                     data-toggle="collapse"
+                class="btn btn-default btn-sm" ng-click="user.details = !user.details">
+                <div ng-show="user.details">PIILOTA OSA SYÖTTEISTÄ</div>
+                <div ng-hide="user.details">NÄYTÄ KAIKKI SYÖTTEET</div>
+            </button>
+        </h1>
 	</div>
+    <div collapse="user.details">
+        <div class="col-sm-12">
+            <p>{{user.team}}, {{user.name}}, {{user.weight}} KG</p>
+        </div>
+    </div>
+    <div collapse="!user.details">
+        <div class="col-sm-12 form-group">
+            <input 	type="text"
+                    ng-model="user.team"
+                    popover-template="'team_popover.html'"
+                    popover-trigger="focus"
+                    class="form-control input-lg" placeholder="PENKKITIIMIN NIMI" ng-change="user.team=user.team.toUpperCase()" required>
+        </div>
+        <div class="col-sm-12 form-group">
+            <input 	type="text"
+                    ng-model="user.name"
+                    popover-template="'name_popover.html'"
+                    popover-trigger="focus"
+                    class="form-control input-lg" placeholder="NOSTAJAN NIMI" ng-change="user.name=user.name.toUpperCase()" required>
+        </div>
+        <div class="col-sm-6 form-group">
+            <select ng-model="user.sex"
+                    popover-template="'sex_popover.html'"
+                    popover-trigger="focus"
+                    class="form-control input-lg">
+                <option value="MALE">MIES</option>
+                <option value="FEMALE">NAINEN</option>
+            </select>
+        </div>
+        <div class="col-sm-6 form-group">
+            <input 	type="number" step="1" min="40"
+                    ng-model="user.weight"
+                    popover-template="'weight_popover.html'"
+                    popover-trigger="focus"
+                    class="form-control input-lg" placeholder="NOSTAJAN PAINO" required>
+        </div>
+    </div>
 	<div class="col-sm-12 form-group">
-		<input 	type="text"
-				ng-model="user.name"
-                popover-template="'name_popover.html'"
-                popover-trigger="focus"
-				class="form-control input-lg" placeholder="NOSTAJAN NIMI" ng-change="user.name=user.name.toUpperCase()" required>
-	</div>
-	<div class="col-sm-4 form-group">
-		<select ng-model="user.sex"
-                popover-template="'sex_popover.html'"
-                popover-trigger="focus"
-				class="form-control input-lg">
-			<option value="MALE">MIES</option>
-			<option value="FEMALE">NAINEN</option>
-		</select>
-	</div>
-	<div class="col-sm-4 form-group">
-		<input 	type="number" step="5" min="40"
-				ng-model="user.weight"
-                popover-template="'weight_popover.html'"
-                popover-trigger="focus"
-				class="form-control input-lg" placeholder="NOSTAJAN PAINO" required>
-	</div>
-	<div class="col-sm-4 form-group">
         <div class="input-group">
 		<span class="input-group-btn">
         <button type="button"
@@ -88,7 +105,7 @@
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         </button>
         </span>
-        <input 	type="number" step="5" min="20"
+        <input 	type="number" step="1" min="20"
 				ng-model="user.lift"
                 popover-template="'display_wilks_popover.html'"
                 popover-trigger="focus"
@@ -114,12 +131,14 @@
 				<th class="col-sm-4"></th>
 				<th class="col-sm-4">
 					<a ng-click="user.predicate='-dkg'" class="btn btn-default pull-right">
-                        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span><strong>KG</strong>
+                        <strong>KG&nbsp;</strong>
+                        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                     </a>
 				</th>
 				<th class="col-sm-4">
 					<a ng-click="user.predicate='-dwk'" class="btn btn-default pull-right">
-                        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span><strong>WILKS</strong>
+                        <strong>WILKS&nbsp;</strong>
+                        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                     </a>
 				</th>
 			</tr>

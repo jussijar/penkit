@@ -4,9 +4,9 @@
                [gyr.core :only [def.module def.filter
                                 def.factory def.controller]]))
 (enable-console-print!)
-(def.module penkit ["ui.bootstrap"])
+(def.module penkit ["ngAnimate" "ui.bootstrap"])
 (defn localStorage->user
-	[u] (if u (.fromJson js/angular u) (obj :sex "FEMALE")))
+	[u] (if u (.fromJson js/angular u) (obj :sex "FEMALE" :details true)))
 (defn pow [x p] (Math/pow x p))
 (defn log10 [x] (Math/log10 x))
 (defn sinclairM [w l]
